@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "dompurify": "3.4.17",
+    "katex": "0.19.0",
+    "markdown-it": "15.0.3"
+  },
+  "name": "zhiye-study-reader",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Zhiye: a local Markdown learning workspace and reader",
+  "scripts": {
+    "start": "python3 server.py",
+    "test": "python3 -m unittest discover -s tests && node tests/render.test.cjs"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moimksa/zhiye.git"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

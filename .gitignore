@@ -1,0 +1,41 @@
+# Personal study data and reader state
+/个人资料/
+/private/
+/local/
+/阅读器/data/
+/学习系统/学习档案.md
+/备考/学习记录.md
+/备考/当前重点.md
+**/课件/
+**/作业/
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+*.csv
+
+# Credentials, local overrides, history, and temporary output
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.log
+.history/
+.codex/
+tmp/
+output/
+dist/
+*.zip
+*.bak
+
+# Tooling and OS metadata
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

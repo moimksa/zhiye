@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f4">
+  <title>知页 · 学习阅读器</title>
+  <meta name="description" content="让知识安静展开。课程笔记、数学公式与阅读高光，集中在一处。">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="/style.css">
+  <script defer src="/vendor/markdown-it.min.js"></script>
+  <script defer src="/vendor/purify.min.js"></script>
+  <script defer src="/vendor/katex/katex.min.js"></script>
+  <script defer src="/render.js"></script>
+  <script defer src="/anchors.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 4h6a4 4 0 0 1 3 1.4A4 4 0 0 1 15 4h6v15h-6a4 4 0 0 0-3 1.4A4 4 0 0 0 9 19H3zM12 5.4v15"/></symbol>
+    <symbol id="i-highlight" viewBox="0 0 24 24"><path d="m9 15 7-11 5 3-7 11zM9 15l-3 4 4 1 4-2M3 22h18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8m-8 4h6"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+    <symbol id="i-focus" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M3 6h1m-1 6h1m-1 6h1"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.4 6.7M20 4v7h-7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="m16 3 5 5-12 12H4v-5zM13 6l5 5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1 1m12 12 1 1M5 19l1-1M18 6l1-1"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/></symbol>
+  </svg>
+  <div id="mobileBackdrop" class="backdrop" hidden></div>
+  <aside id="sidebar" class="sidebar" aria-label="知识库导航">
+    <button id="brandButton" class="brand" aria-label="返回起始文档">
+      <span class="brand-mark"><svg class="icon"><use href="#i-book"/></svg></span>
+      <span class="brand-name">知页<span>YOUR STUDY, IN FOCUS</span></span>
+    </button>
+    <button id="searchButton" class="search-trigger"><svg class="icon"><use href="#i-search"/></svg><span>搜索知识库</span><kbd>⌘ K</kbd></button>
+    <div class="collection-label">我的书库 <span id="documentCount">—</span></div>
+    <div class="course-label"><span class="course-monogram">Z<span>y</span></span><span><strong>本地学习空间</strong><small>笔记 · 练习 · 自己的理解</small></span></div>
+    <nav id="library" class="library" aria-label="文档索引"><p class="loading-copy">正在整理书架…</p></nav>
+    <div class="sidebar-bottom">
+      <button id="allHighlightsButton" class="all-highlights"><svg class="icon"><use href="#i-highlight"/></svg><span>我的高光</span><span id="allHighlightCount" class="count-badge">0</span></button>
+      <div class="library-status"><span><i></i><span id="syncStatus">本地知识库</span></span><button id="refreshButton" class="icon-button" title="刷新书库" aria-label="刷新书库"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="topbar-start"><button id="sidebarButton" class="icon-button" title="切换书库侧栏" aria-label="切换书库侧栏" aria-expanded="true"><svg class="icon"><use href="#i-panel"/></svg></button><div id="breadcrumb" class="breadcrumb">知页 <span>/</span> 开始阅读</div></div>
+      <div class="reader-tools">
+        <span id="saveStatus" class="save-status">随时回到这里</span>
+        <button id="focusButton" class="icon-button" aria-label="专注阅读" title="专注阅读 · F" aria-pressed="false"><svg class="icon"><use href="#i-focus"/></svg></button>
+        <button id="appearanceButton" class="icon-button type-button" aria-label="阅读设置" title="阅读设置" aria-expanded="false">Aa</button>
+        <span class="toolbar-divider"></span>
+        <button id="contextButton" class="icon-button" aria-label="目录与高光" title="目录与高光" aria-expanded="true"><svg class="icon"><use href="#i-list"/></svg></button>
+      </div>
+    </header>
+    <div class="reading-layout">
+      <main id="readerScroll" class="reader-scroll" aria-label="阅读区" tabindex="-1">
+        <div id="readingProgress" class="reading-progress"></div>
+        <div class="reading-sheet">
+          <div id="documentEyebrow" class="document-eyebrow">ZHIYE <span>·</span> LOCAL STUDY WORKSPACE</div>
+          <article id="article" class="markdown" aria-live="polite"><div class="loading-state"><span class="loading-line"></span><p>让知识，安静展开。</p></div></article>
+          <div id="documentEnd" class="document-end" hidden><span></span><svg class="icon"><use href="#i-book"/></svg><span></span></div>
+          <nav id="readingNavigation" class="reading-navigation" aria-label="前后文档"></nav>
+        </div>
+      </main>
+      <aside id="contextPanel" class="context-panel" aria-label="目录与高光">
+        <div class="context-tabs" role="tablist" aria-label="阅读辅助"><button id="tocTab" role="tab" aria-selected="true" aria-controls="tocPane">本页目录</button><button id="highlightTab" role="tab" aria-selected="false" aria-controls="highlightsPane">高光<span id="pageHighlightCount">0</span></button></div>
+        <div id="tocPane" role="tabpanel" aria-labelledby="tocTab"><div id="toc" class="toc"></div><div class="reading-tip"><svg class="icon"><use href="#i-highlight"/></svg><p>读到重要的地方，<br>选中文字，留一道高光。</p></div></div>
+        <div id="highlightsPane" role="tabpanel" aria-labelledby="highlightTab" hidden>
+          <div class="highlight-controls"><select id="highlightScope" aria-label="高光范围"><option value="page">当前文档</option><option value="all">全部文档</option></select><a class="icon-button" href="/api/export" download="知页-阅读记录.json" title="备份高光和阅读记录" aria-label="备份高光和阅读记录"><svg class="icon"><use href="#i-download"/></svg></a></div>
+          <div id="highlightList" class="highlight-list"></div>
+        </div>
+        <div class="context-footer"><span id="progressLabel">阅读位置 0%</span><span id="sectionCount"></span></div>
+      </aside>
+    </div>
+  </div>
+  <div id="selectionToolbar" class="selection-toolbar" role="toolbar" aria-label="选中文字的高光操作" hidden>
+    <span>高光</span><button class="color-dot yellow" data-color="yellow" aria-label="标记为暖黄色" title="暖黄"></button><button class="color-dot green" data-color="green" aria-label="标记为鼠尾草绿" title="鼠尾草绿"></button><button class="color-dot purple" data-color="purple" aria-label="标记为浅紫色" title="浅紫"></button><i></i><button id="copySelectionButton" class="icon-button" aria-label="复制选文" title="复制选文"><svg class="icon"><use href="#i-copy"/></svg></button>
+  </div>
+  <section id="appearancePopover" class="appearance-popover" aria-label="阅读设置" hidden>
+    <div class="popover-heading">适合你的阅读方式</div>
+    <div class="setting-row"><span>文字大小</span><div class="size-control"><button id="fontSmaller" aria-label="减小字号">A−</button><output id="fontSizeLabel">17</output><button id="fontLarger" aria-label="增大字号">A+</button></div></div>
+    <div class="setting-row"><span>页面主题</span><div class="theme-control"><button data-theme-choice="light" aria-label="浅色主题" title="浅色"><svg class="icon"><use href="#i-sun"/></svg></button><button data-theme-choice="dark" aria-label="深色主题" title="深色"><svg class="icon"><use href="#i-moon"/></svg></button></div></div>
+    <label class="setting-row"><span>宽版阅读</span><input id="wideToggle" type="checkbox" role="switch"></label>
+  </section>
+  <dialog id="searchDialog" class="search-dialog">
+    <div class="search-input-wrap"><svg class="icon"><use href="#i-search"/></svg><input id="searchInput" type="search" autocomplete="off" placeholder="搜标题、概念，或一句你记得的话…" aria-label="搜索知识库全文"><button id="closeSearch" class="key-button" aria-label="关闭搜索">ESC</button></div>
+    <div id="searchSummary" class="search-summary">从一个概念开始</div><div id="searchResults" class="search-results"></div>
+    <div class="search-footer"><span>标题与全文搜索</span><span><kbd>↑</kbd> <kbd>↓</kbd> 选择 <kbd>↵</kbd> 打开</span></div>
+  </dialog>
+  <dialog id="noteDialog" class="note-dialog"><form id="noteForm"><div class="note-heading"><h2>留一句自己的理解</h2><button type="button" id="closeNote" class="icon-button" aria-label="关闭笔记"><svg class="icon"><use href="#i-close"/></svg></button></div><blockquote id="noteQuote"></blockquote><label for="noteInput">高光笔记</label><textarea id="noteInput" rows="5" maxlength="4000" placeholder="记下关键关系，或暂时没想明白的地方。"></textarea><div class="note-actions"><button type="button" id="cancelNote" class="quiet-button">取消</button><button type="submit" class="primary-button">保存笔记</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

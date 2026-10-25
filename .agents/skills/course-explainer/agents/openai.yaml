@@ -1,0 +1,4 @@
+interface:
+  display_name: "课程讲解与学习辅导"
+  short_description: "为数学与人工智能课程提供清晰讲解、分层练习、考试准备与知识沉淀"
+  default_prompt: "请用 $course-explainer 帮我学懂当前课程主题，讲清关键逻辑，并根据我的目标安排练习或整理知识库。"
